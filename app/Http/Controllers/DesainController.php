@@ -17,8 +17,8 @@ class DesainController extends Controller
         $user = auth('sanctum')->user();
 
         $desain = $user
-            ? desian::where('id_user', null)->orWhere('id_user', $user->id_user)->get()
-            : desian::where('id_user', null)->get();
+            ? desain::where('id_user', null)->orWhere('id_user', $user->id_user)->get()
+            : desain::where('id_user', null)->get();
 
         return $desain->map(function ($item) use ($user) {
             return [
@@ -36,7 +36,7 @@ class DesainController extends Controller
      */
     public function getImage($id_desain)
     {
-        $desain = desian::find($id_desain);
+        $desain = desain::find($id_desain);
 
         if ($desain && file_exists(public_path($desain->imageUrl))) {
             return response()->file(public_path($desain->imageUrl));
@@ -64,7 +64,7 @@ class DesainController extends Controller
         $filename = 'image_' . time() . '.' . $image->getClientOriginalExtension();
         $image->move(public_path('upload'), $filename);
 
-        desian::create([
+        desain::create([
             "judul" => $request->judul,
             "luas" => $request->luas,
             "harga" => $request->harga,
@@ -90,7 +90,7 @@ class DesainController extends Controller
             "image" => ["image"],
         ]);
 
-        $desain = desian::find($id_desain);
+        $desain = desain::find($id_desain);
 
         if (!$desain) {
             return response()->json([
@@ -129,7 +129,7 @@ class DesainController extends Controller
      */
     public function destroy(Request $request, $id_desain)
     {
-        $desain = desian::find($id_desain);
+        $desain = desain::find($id_desain);
 
         if (!$desain) {
             return response()->json([
